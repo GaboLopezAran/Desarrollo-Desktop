@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Administracion_FinancieraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="cuenta">
+    <Key>
+      <PropertyRef Name="id_cuenta" />
+    </Key>
+    <Property Name="id_cuenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuarios" Type="Int32" Nullable="false" />
+    <Property Name="id_ingresos" Type="Int32" Nullable="false" />
+    <Property Name="id_egresos" Type="Int32" Nullable="false" />
+    <Property Name="monto" Type="Int32" />
+    <NavigationProperty Name="egreso" Relationship="Self.FK__cuenta__id_egres__412EB0B6" FromRole="cuenta" ToRole="egreso" />
+    <NavigationProperty Name="ingreso" Relationship="Self.FK__cuenta__id_ingre__403A8C7D" FromRole="cuenta" ToRole="ingreso" />
+    <NavigationProperty Name="usuario" Relationship="Self.FK__cuenta__monto__3F466844" FromRole="cuenta" ToRole="usuario" />
+  </EntityType>
+  <EntityType Name="egreso">
+    <Key>
+      <PropertyRef Name="id_egreso" />
+    </Key>
+    <Property Name="id_egreso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuarios" Type="Int32" Nullable="false" />
+    <Property Name="monto" Type="Int32" />
+    <Property Name="fecha" Type="DateTime" Precision="0" />
+    <Property Name="descricpcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="cuentas" Relationship="Self.FK__cuenta__id_egres__412EB0B6" FromRole="egreso" ToRole="cuenta" />
+    <NavigationProperty Name="usuario" Relationship="Self.FK__egreso__descricp__3C69FB99" FromRole="egreso" ToRole="usuario" />
+  </EntityType>
+  <EntityType Name="ingreso">
+    <Key>
+      <PropertyRef Name="id_ingreso" />
+    </Key>
+    <Property Name="id_ingreso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuarios" Type="Int32" Nullable="false" />
+    <Property Name="monto" Type="Int32" />
+    <Property Name="fecha" Type="DateTime" Precision="0" />
+    <Property Name="descricpcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="cuentas" Relationship="Self.FK__cuenta__id_ingre__403A8C7D" FromRole="ingreso" ToRole="cuenta" />
+    <NavigationProperty Name="usuario" Relationship="Self.FK__ingreso__descric__398D8EEE" FromRole="ingreso" ToRole="usuario" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="id_usuario" />
+    </Key>
+    <Property Name="id_usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="usuario1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="contrasena" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="cuentas" Relationship="Self.FK__cuenta__monto__3F466844" FromRole="usuario" ToRole="cuenta" />
+    <NavigationProperty Name="egresoes" Relationship="Self.FK__egreso__descricp__3C69FB99" FromRole="usuario" ToRole="egreso" />
+    <NavigationProperty Name="ingresoes" Relationship="Self.FK__ingreso__descric__398D8EEE" FromRole="usuario" ToRole="ingreso" />
+  </EntityType>
+  <Association Name="FK__cuenta__id_egres__412EB0B6">
+    <End Role="egreso" Type="Self.egreso" Multiplicity="1" />
+    <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="egreso">
+        <PropertyRef Name="id_egreso" />
+      </Principal>
+      <Dependent Role="cuenta">
+        <PropertyRef Name="id_egresos" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__cuenta__id_ingre__403A8C7D">
+    <End Role="ingreso" Type="Self.ingreso" Multiplicity="1" />
+    <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ingreso">
+        <PropertyRef Name="id_ingreso" />
+      </Principal>
+      <Dependent Role="cuenta">
+        <PropertyRef Name="id_ingresos" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__cuenta__monto__3F466844">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="cuenta">
+        <PropertyRef Name="id_usuarios" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__egreso__descricp__3C69FB99">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="egreso" Type="Self.egreso" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="egreso">
+        <PropertyRef Name="id_usuarios" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ingreso__descric__398D8EEE">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="ingreso" Type="Self.ingreso" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="ingreso">
+        <PropertyRef Name="id_usuarios" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Administracion_FinancieraEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="cuentas" EntityType="Self.cuenta" />
+    <EntitySet Name="egresoes" EntityType="Self.egreso" />
+    <EntitySet Name="ingresoes" EntityType="Self.ingreso" />
+    <EntitySet Name="usuarios" EntityType="Self.usuario" />
+    <AssociationSet Name="FK__cuenta__id_egres__412EB0B6" Association="Self.FK__cuenta__id_egres__412EB0B6">
+      <End Role="egreso" EntitySet="egresoes" />
+      <End Role="cuenta" EntitySet="cuentas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__cuenta__id_ingre__403A8C7D" Association="Self.FK__cuenta__id_ingre__403A8C7D">
+      <End Role="ingreso" EntitySet="ingresoes" />
+      <End Role="cuenta" EntitySet="cuentas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__cuenta__monto__3F466844" Association="Self.FK__cuenta__monto__3F466844">
+      <End Role="usuario" EntitySet="usuarios" />
+      <End Role="cuenta" EntitySet="cuentas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__egreso__descricp__3C69FB99" Association="Self.FK__egreso__descricp__3C69FB99">
+      <End Role="usuario" EntitySet="usuarios" />
+      <End Role="egreso" EntitySet="egresoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ingreso__descric__398D8EEE" Association="Self.FK__ingreso__descric__398D8EEE">
+      <End Role="usuario" EntitySet="usuarios" />
+      <End Role="ingreso" EntitySet="ingresoes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

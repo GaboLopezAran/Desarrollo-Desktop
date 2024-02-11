@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Administracion_FinancieraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cuenta">
+          <Key>
+            <PropertyRef Name="id_cuenta" />
+          </Key>
+          <Property Name="id_cuenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_usuarios" Type="int" Nullable="false" />
+          <Property Name="id_ingresos" Type="int" Nullable="false" />
+          <Property Name="id_egresos" Type="int" Nullable="false" />
+          <Property Name="monto" Type="int" />
+        </EntityType>
+        <EntityType Name="egreso">
+          <Key>
+            <PropertyRef Name="id_egreso" />
+          </Key>
+          <Property Name="id_egreso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_usuarios" Type="int" Nullable="false" />
+          <Property Name="monto" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="descricpcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ingreso">
+          <Key>
+            <PropertyRef Name="id_ingreso" />
+          </Key>
+          <Property Name="id_ingreso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_usuarios" Type="int" Nullable="false" />
+          <Property Name="monto" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="descricpcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="usuario" Type="varchar" MaxLength="30" />
+          <Property Name="contrasena" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK__cuenta__id_egres__412EB0B6">
+          <End Role="egreso" Type="Self.egreso" Multiplicity="1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="egreso">
+              <PropertyRef Name="id_egreso" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="id_egresos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__id_ingre__403A8C7D">
+          <End Role="ingreso" Type="Self.ingreso" Multiplicity="1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ingreso">
+              <PropertyRef Name="id_ingreso" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="id_ingresos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__monto__3F466844">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="id_usuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__egreso__descricp__3C69FB99">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="egreso" Type="Self.egreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="egreso">
+              <PropertyRef Name="id_usuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ingreso__descric__398D8EEE">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="ingreso" Type="Self.ingreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="ingreso">
+              <PropertyRef Name="id_usuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_filtroIngresos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechainicio" Type="datetime" Mode="In" />
+          <Parameter Name="fechafinal" Type="datetime" Mode="In" />
+        </Function>
+        <EntityContainer Name="Administracion_FinancieraModelStoreContainer">
+          <EntitySet Name="cuenta" EntityType="Self.cuenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="egreso" EntityType="Self.egreso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ingreso" EntityType="Self.ingreso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__cuenta__id_egres__412EB0B6" Association="Self.FK__cuenta__id_egres__412EB0B6">
+            <End Role="egreso" EntitySet="egreso" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__id_ingre__403A8C7D" Association="Self.FK__cuenta__id_ingre__403A8C7D">
+            <End Role="ingreso" EntitySet="ingreso" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__monto__3F466844" Association="Self.FK__cuenta__monto__3F466844">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__egreso__descricp__3C69FB99" Association="Self.FK__egreso__descricp__3C69FB99">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="egreso" EntitySet="egreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ingreso__descric__398D8EEE" Association="Self.FK__ingreso__descric__398D8EEE">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="ingreso" EntitySet="ingreso" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Administracion_FinancieraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cuenta">
+          <Key>
+            <PropertyRef Name="id_cuenta" />
+          </Key>
+          <Property Name="id_cuenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_usuarios" Type="Int32" Nullable="false" />
+          <Property Name="id_ingresos" Type="Int32" Nullable="false" />
+          <Property Name="id_egresos" Type="Int32" Nullable="false" />
+          <Property Name="monto" Type="Int32" />
+          <NavigationProperty Name="egreso" Relationship="Self.FK__cuenta__id_egres__412EB0B6" FromRole="cuenta" ToRole="egreso" />
+          <NavigationProperty Name="ingreso" Relationship="Self.FK__cuenta__id_ingre__403A8C7D" FromRole="cuenta" ToRole="ingreso" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__cuenta__monto__3F466844" FromRole="cuenta" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="egreso">
+          <Key>
+            <PropertyRef Name="id_egreso" />
+          </Key>
+          <Property Name="id_egreso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_usuarios" Type="Int32" Nullable="false" />
+          <Property Name="monto" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="descricpcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cuentas" Relationship="Self.FK__cuenta__id_egres__412EB0B6" FromRole="egreso" ToRole="cuenta" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__egreso__descricp__3C69FB99" FromRole="egreso" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="ingreso">
+          <Key>
+            <PropertyRef Name="id_ingreso" />
+          </Key>
+          <Property Name="id_ingreso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_usuarios" Type="Int32" Nullable="false" />
+          <Property Name="monto" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="descricpcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cuentas" Relationship="Self.FK__cuenta__id_ingre__403A8C7D" FromRole="ingreso" ToRole="cuenta" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__ingreso__descric__398D8EEE" FromRole="ingreso" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="usuario1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="contrasena" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cuentas" Relationship="Self.FK__cuenta__monto__3F466844" FromRole="usuario" ToRole="cuenta" />
+          <NavigationProperty Name="egresoes" Relationship="Self.FK__egreso__descricp__3C69FB99" FromRole="usuario" ToRole="egreso" />
+          <NavigationProperty Name="ingresoes" Relationship="Self.FK__ingreso__descric__398D8EEE" FromRole="usuario" ToRole="ingreso" />
+        </EntityType>
+        <Association Name="FK__cuenta__id_egres__412EB0B6">
+          <End Role="egreso" Type="Self.egreso" Multiplicity="1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="egreso">
+              <PropertyRef Name="id_egreso" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="id_egresos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__id_ingre__403A8C7D">
+          <End Role="ingreso" Type="Self.ingreso" Multiplicity="1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ingreso">
+              <PropertyRef Name="id_ingreso" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="id_ingresos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__monto__3F466844">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="id_usuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__egreso__descricp__3C69FB99">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="egreso" Type="Self.egreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="egreso">
+              <PropertyRef Name="id_usuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ingreso__descric__398D8EEE">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="ingreso" Type="Self.ingreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="ingreso">
+              <PropertyRef Name="id_usuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Administracion_FinancieraEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cuentas" EntityType="Self.cuenta" />
+          <EntitySet Name="egresoes" EntityType="Self.egreso" />
+          <EntitySet Name="ingresoes" EntityType="Self.ingreso" />
+          <EntitySet Name="usuarios" EntityType="Self.usuario" />
+          <AssociationSet Name="FK__cuenta__id_egres__412EB0B6" Association="Self.FK__cuenta__id_egres__412EB0B6">
+            <End Role="egreso" EntitySet="egresoes" />
+            <End Role="cuenta" EntitySet="cuentas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__id_ingre__403A8C7D" Association="Self.FK__cuenta__id_ingre__403A8C7D">
+            <End Role="ingreso" EntitySet="ingresoes" />
+            <End Role="cuenta" EntitySet="cuentas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__monto__3F466844" Association="Self.FK__cuenta__monto__3F466844">
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="cuenta" EntitySet="cuentas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__egreso__descricp__3C69FB99" Association="Self.FK__egreso__descricp__3C69FB99">
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="egreso" EntitySet="egresoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ingreso__descric__398D8EEE" Association="Self.FK__ingreso__descric__398D8EEE">
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="ingreso" EntitySet="ingresoes" />
+          </AssociationSet>
+          <FunctionImport Name="SP_filtroIngresos" ReturnType="Collection(Administracion_FinancieraModel.SP_filtroIngresos_Result)">
+            <Parameter Name="fechainicio" Mode="In" Type="DateTime" />
+            <Parameter Name="fechafinal" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SP_filtroIngresos_Result">
+          <Property Type="Int32" Name="id_ingreso" Nullable="false" />
+          <Property Type="String" Name="usuario" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="fecha" Nullable="true" />
+          <Property Type="Decimal" Name="monto" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="String" Name="descricpcion" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Administracion_FinancieraModelStoreContainer" CdmEntityContainer="Administracion_FinancieraEntities1">
+          <EntitySetMapping Name="cuentas">
+            <EntityTypeMapping TypeName="Administracion_FinancieraModel.cuenta">
+              <MappingFragment StoreEntitySet="cuenta">
+                <ScalarProperty Name="id_cuenta" ColumnName="id_cuenta" />
+                <ScalarProperty Name="id_usuarios" ColumnName="id_usuarios" />
+                <ScalarProperty Name="id_ingresos" ColumnName="id_ingresos" />
+                <ScalarProperty Name="id_egresos" ColumnName="id_egresos" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="egresoes">
+            <EntityTypeMapping TypeName="Administracion_FinancieraModel.egreso">
+              <MappingFragment StoreEntitySet="egreso">
+                <ScalarProperty Name="id_egreso" ColumnName="id_egreso" />
+                <ScalarProperty Name="id_usuarios" ColumnName="id_usuarios" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="descricpcion" ColumnName="descricpcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ingresoes">
+            <EntityTypeMapping TypeName="Administracion_FinancieraModel.ingreso">
+              <MappingFragment StoreEntitySet="ingreso">
+                <ScalarProperty Name="id_ingreso" ColumnName="id_ingreso" />
+                <ScalarProperty Name="id_usuarios" ColumnName="id_usuarios" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="descricpcion" ColumnName="descricpcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuarios">
+            <EntityTypeMapping TypeName="Administracion_FinancieraModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="usuario1" ColumnName="usuario" />
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_filtroIngresos" FunctionName="Administracion_FinancieraModel.Store.SP_filtroIngresos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Administracion_FinancieraModel.SP_filtroIngresos_Result">
+                <ScalarProperty Name="id_ingreso" ColumnName="id_ingreso" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="descricpcion" ColumnName="descricpcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
